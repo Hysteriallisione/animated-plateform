@@ -4,39 +4,32 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
-    public float Speed = 20f;
-    private bool jumpPressed;
-    private Rigidbody rigBod;
+    public float jumpSpeed ;
+    public float Speed;
+    private Rigidbody2D rigBod;
 
     // Start is called before the first frame update
     void Start()
     {
-        rigBod = GetComponent<Rigidbody>();
+        rigBod = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Translate(Vector2.right * Time.deltaTime * Speed);
+            transform.Translate(Vector3.right * Time.deltaTime * Speed);
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Translate(Vector2.left * Time.deltaTime * Speed);
+            transform.Translate(Vector3.left * Time.deltaTime * Speed);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            jumpPressed = true;
+            transform.Translate(Vector3.up * Time.deltaTime * jumpSpeed);
+
         }
     }
-    private void FixedUpdate()
-    {
-        if (jumpPressed)
-        {
-            // on demande à la touche space de multiplier par 5 la force du saut par la vélocité
-            rigBod.AddForce(Vector2.up * 5, ForceMode.VelocityChange);
-            jumpPressed = false;
-        }
-    }
+    
 }
