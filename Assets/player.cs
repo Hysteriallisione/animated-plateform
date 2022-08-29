@@ -5,10 +5,14 @@ using UnityEngine;
 public class player : MonoBehaviour
 {
     public bool jumpTouch;
+    public bool DoubleJump;
+    public bool whileOnJump;
     public float jumpForce;
     public float Speed;
     private Rigidbody2D rigBod;
     public Vector2 force;
+    public byte MaxJumpCount = 2;
+    private byte CurrentJumpCount = 1;
 
 
     // Start is called before the first frame update
@@ -18,15 +22,25 @@ public class player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-
-       
         if (jumpTouch)
         {
+            CurrentJumpCount++;
             rigBod.AddForce(Vector2.up * jumpForce * Speed);
             jumpTouch = false;
-            //Debug.Log("JE SAUUUTE ");
-        }
+            Debug.Log("JE SAUTE ");
 
+            whileOnJump = true;
+        }
+        if (DoubleJump == true)
+        {
+            rigBod.AddForce(Vector2.up * jumpForce * 5);
+            DoubleJump = false;
+            Debug.Log("JE RE-SAUUUTE ");
+         //   if (CurrentJumpCount == MaxJumpCount)
+           // {
+             //   jumpTouch = false;
+            //}
+        }
 
         if (this.rigBod.velocity.y < 0)
         {
@@ -35,6 +49,17 @@ public class player : MonoBehaviour
         else
         {
             rigBod.gravityScale = 1;
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "ground")
+        {
+            CurrentJumpCount = MaxJumpCount;
+        }if (CurrentJumpCount == MaxJumpCount) 
+        {
+            CurrentJumpCount = 0;
+            DoubleJump = false;
         }
     }
 
@@ -52,25 +77,26 @@ public class player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            jumpTouch = true;
-        }
-       
-        //if (jumpTouch)
-        //{
+            if (whileOnJump == true)
+            {
+                DoubleJump = true;
+            }
+            else
+            {
+                jumpTouch = true;
+            }
+          
+
+
+
+            //if (jumpTouch)
+            //{
             //Debug.Log("================ update : " + jumpTouch);
-        //}
-    //   else
-      //  {
+            //}
+            //   else
+            //  {
             //Debug.Log("update:" + jumpTouch);
-       //}
-
-        // if (Input.GetKey(KeyCode.RightArrow))
-        //{
-        //if(Input.GetKeyDown(KeyCode.Space))
-        //{
-        //   transform.Translate(Vector2.up + Vector2.right * Time.deltaTime * Speed);
-        //}
-        //}
-
+            //}
+        }
     }
 }
