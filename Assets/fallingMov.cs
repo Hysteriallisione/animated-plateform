@@ -9,16 +9,16 @@ public class fallingMov : StateMachineBehaviour
     public Animator animateur;
 
     // Start is called before the first frame update
-    void fixedUpdate()
+    void FixedUpdate()
     {
-        if (rigibrody.velocity.y > 0)
+        if (rigibrody.velocity.y > 1)
         {
             rigibrody.gravityScale = gravScalFall;
+            animateur.SetBool("falling", true);
         }
         else
         {
             rigibrody.gravityScale = 1;
-            animateur.SetBool("falling", true);
         }
     }
 
